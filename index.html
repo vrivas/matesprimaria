@@ -1,0 +1,141 @@
+<html>
+<head>
+<style>
+body {
+  font-size: 160%;
+}
+input {
+  font-size: 120%;
+}
+
+.correcto {
+  color: green;
+}
+
+.incorrecto {
+  color: red;
+}
+
+#id_operaciones_realizadas {
+  font-family: monospace;
+}
+</style>
+<script>
+var nombre=null;
+var num1, num2, oper, resul, numOper=0, maxOper=5, aciertos=0;
+var t_inicio, t_final, duracion;
+function duracion2cad() {
+  var mn=duracion%60000;
+  mn=(duracion-mn)/60000;
+  duracion=duracion-mn*60000;
+  var sg=duracion%1000;
+  sg=(duracion-sg)/1000;
+  duracion=duracion-sg*1000;
+  var ms=duracion;
+
+  return (mn>0?mn+ "minutos, ":"") +sg+" segundos y "+ms+" milisegundos";
+}
+
+function inicia_tiempo() {
+  t_inicio=new Date();
+}
+
+function termina_tiempo() {
+  t_final=new Date();
+  duracion=t_final-t_inicio;
+}
+function pideNombre() {
+  nombre=nombre || prompt( "Dime cómo te llamas, por favor.");
+}
+
+function escribeNombre() {
+  if ( nombre ) {
+    document.getElementById('sp_nombre').innerHTML=nombre;
+  }
+}
+
+function obtenerNumeros() {
+  num1=Math.floor( Math.random()*10);
+  num2=Math.floor( Math.random()*10);
+  oper=Math.floor( Math.random()*3); // 0:suma, 1:resta, 2:multip
+  // Si es resta
+  if( oper==1 ) {
+    var t1=num1;
+    var t2=num2;
+    if( num2>num1 ) {
+      num1=t2;
+      num2=t1;
+    }
+  }
+  resul=oper==0?num1+num2:(oper==1?num1-num2:num1*num2);
+}
+
+function operacion2cadena() {
+  return num1+ " " + ((oper==0)?"+":(oper==1)?"-":"*") + " "+num2+" = ";
+}
+function pintarOperacion() {
+  document.getElementById('sp_operacion').innerHTML=operacion2cadena();
+}
+
+function obtenerRespuesta() {
+  document.getElementById('ip_resultado').value="";
+  document.getElementById('ip_resultado').focus();
+}
+
+function comprobarRespuesta() {
+  var tmpRes=parseInt( document.getElementById('ip_resultado').value );
+  if( tmpRes==resul ) ++aciertos;
+  escribirResultado( tmpRes, resul);
+  if( numOper<maxOper ) {
+    nuevaOperacion();
+  } else {
+    finPartida();
+  }
+}
+
+function finPartida() {
+  termina_tiempo();
+  document.getElementById('id_partida').innerHTML="Fin de la partida.<br/>";
+  if( aciertos==numOper ) {
+    document.getElementById('id_partida').innerHTML+="Has realizado bien todas las operaciones. ¡¡Felicidades!!";
+  } else {
+    document.getElementById('id_partida').innerHTML+="Has contestado correctamente "+aciertos+" de las "+numOper
+    + " operaciones,  y te has equivocado en "+(numOper-aciertos)
+    + ". ¡Sigue practicando!";
+  }
+  document.getElementById('id_partida').innerHTML+="<br>Has tardado "+duracion2cad();
+  document.getElementById('id_partida').innerHTML+="<br><input type='button' onClick='history.go(0)' value='Volver a jugar'>"
+}
+function escribirResultado( tmpRes, resul) {
+  document.getElementById('operaciones_realizadas').innerHTML+="<br/>"
+    + "&nbsp;&nbsp;"+numOper+") "
+    + operacion2cadena() + tmpRes +" "+
+    (tmpRes==resul?"<span class='correcto'>&nbsp;&nbsp;&nbsp;--> Correcto</span>":"<span class='incorrecto'>&nbsp;&nbsp;&nbsp;---> Incorrecto</span>")
+}
+function nuevaOperacion() {
+  ++numOper;
+  obtenerNumeros();
+  pintarOperacion();
+  obtenerRespuesta();
+}
+</script>
+</head>
+<body>
+<h1>Operaciones matemáticas</h1>
+<h3>Hola. Realiza las siguientes operaciones</h3>
+  <div id="id_partida">
+<form id="form1" name="form1" onsubmit="javascript:comprobarRespuesta();
+ return false;">
+  <span id="sp_operacion"></span>
+  <input type="text" id="ip_resultado" name="ip_resultado" size="10">
+</form>
+</div>
+<h3>Operaciones realizadas</h3>
+<div id='operaciones_realizadas'></div>
+<script>
+inicia_tiempo();
+nuevaOperacion();
+
+</Script>
+</body>
+</html>
