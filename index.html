@@ -119,10 +119,31 @@ function nuevaOperacion() {
   obtenerRespuesta();
 }
 </script>
+<style>
+html {
+  background-color: white;
+}
+body {
+  background-color: rgba( 0, 0, 255, 0.2);
+  margin: 1em;
+  border: 3px dotted rgba( 0,0,255, 0.8);
+  padding: 1em;
+  text-align: center;
+  color: rgba( 0,0,255, 0.8);
+}
+
+h1 {
+  color: rgba( 0,0,255, 0.8)
+}
+
+#id_partida, #operaciones_realizadas {
+  border: 3px dotted rgba( 150, 0, 255, 0.9);
+}
+</style>
 </head>
 <body>
 <h1>Operaciones matemáticas</h1>
-<h3>Hola. Realiza las siguientes operaciones</h3>
+<h3>Realiza las siguientes operaciones</h3>
   <div id="id_partida">
 <form id="form1" name="form1" onsubmit="javascript:comprobarRespuesta();
  return false;">
