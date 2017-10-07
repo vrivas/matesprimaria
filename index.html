@@ -1,6 +1,25 @@
 <html>
 <head>
 <style>
+html {
+  background-color: white;
+}
+body {
+  background-color: rgba( 200, 200, 255 , 0.2);
+  margin: 1em;
+  border: 3px dotted rgba( 0,0,200, 0.8);
+  padding: 1em;
+  text-align: center;
+  color: rgba( 0,0,255, 0.8);
+}
+
+h1 {
+  color: rgba( 90,0,230, 0.8)
+}
+
+#id_partida, #operaciones_realizadas {
+  border: 3px dotted rgba( 150, 0, 255, 0.9);
+}
 body {
   font-size: 160%;
 }
@@ -22,7 +41,7 @@ body {
 </style>
 <script>
 var nombre=null;
-var num1, num2, oper, resul, numOper=0, maxOper=5, aciertos=0;
+var num1, num2, oper, resul, numOper=0, maxOper=15, aciertos=0;
 var t_inicio, t_final, duracion;
 function duracion2cad() {
   var mn=duracion%60000;
@@ -55,9 +74,9 @@ function escribeNombre() {
 }
 
 function obtenerNumeros() {
-  num1=Math.floor( Math.random()*10);
-  num2=Math.floor( Math.random()*10);
   oper=Math.floor( Math.random()*3); // 0:suma, 1:resta, 2:multip
+  num1=Math.floor( Math.random()*(oper==2?10:20));
+  num2=Math.floor( Math.random()*(oper==2?10:20));
   // Si es resta
   if( oper==1 ) {
     var t1=num1;
@@ -107,10 +126,11 @@ function finPartida() {
   document.getElementById('id_partida').innerHTML+="<br><input type='button' onClick='history.go(0)' value='Volver a jugar'>"
 }
 function escribirResultado( tmpRes, resul) {
-  document.getElementById('operaciones_realizadas').innerHTML+="<br/>"
-    + "&nbsp;&nbsp;"+numOper+") "
+  document.getElementById('operaciones_realizadas').innerHTML="&nbsp;&nbsp;"+numOper+") "
     + operacion2cadena() + tmpRes +" "+
     (tmpRes==resul?"<span class='correcto'>&nbsp;&nbsp;&nbsp;--> Correcto</span>":"<span class='incorrecto'>&nbsp;&nbsp;&nbsp;---> Incorrecto</span>")
+    + "<br/>"
+    + document.getElementById('operaciones_realizadas').innerHTML;
 }
 function nuevaOperacion() {
   ++numOper;
@@ -119,27 +139,7 @@ function nuevaOperacion() {
   obtenerRespuesta();
 }
 </script>
-<style>
-html {
-  background-color: white;
-}
-body {
-  background-color: rgba( 0, 0, 255, 0.2);
-  margin: 1em;
-  border: 3px dotted rgba( 0,0,255, 0.8);
-  padding: 1em;
-  text-align: center;
-  color: rgba( 0,0,255, 0.8);
-}
 
-h1 {
-  color: rgba( 0,0,255, 0.8)
-}
-
-#id_partida, #operaciones_realizadas {
-  border: 3px dotted rgba( 150, 0, 255, 0.9);
-}
-</style>
 </head>
 <body>
 <h1>Operaciones matemáticas</h1>
